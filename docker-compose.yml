@@ -1,14 +1,28 @@
 version: '3.8'
 services:
   web:
-    build: .
+    image: vvfhnqatfvlbh0kpk1682sna:0bce4c1fc0b074c01d2a8064c9b272bfb11762fd
     container_name: kanban-app
     ports:
       - '3000:3000'
     environment:
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-      # - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY} # (opsiyonel, gerekirse ekle)
+      - DATABASE_URL=postgresql://postgres:dbdf85dedbe963d93db890f87e49c2cb6c46a53c4048c2274b8464a7915d5f2c@supabase-db:5432/postgres
+      - DIRECT_URL=postgresql://postgres:dbdf85dedbe963d93db890f87e49c2cb6c46a53c4048c2274b8464a7915d5f2c@supabase-db:5432/postgres
+      - DATABASE_PROVIDER=postgresql
+      - NEXT_PUBLIC_SUPABASE_URL=https://supabase.volikoprint.com
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzcyNDg1NzA0LCJleHAiOjIwODc4NDU3MDR9.aEyCP-Fivl-M69p6lTxFH0f6nVLrPoSW4pyZNcheVSU
+      - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NzI0ODU3MDQsImV4cCI6MjA4Nzg0NTcwNH0.LV1CGuI63p8q3D1vg6ZAM4m09UxHqbYWItCrBQ1B1MM
+      - NEXT_PUBLIC_SITE_URL=http://192.168.1.50:3000
+      - NEXTAUTH_URL=http://192.168.1.50:3000
+      - NEXTAUTH_SECRET=46d3cb90b6c683627d13be536339d9a504449ecdb
+      - HOST=0.0.0.0
+      - PORT=3000
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
     restart: unless-stopped
-    env_file:
-      - .env.local 
+    networks:
+      - supabase_default
+
+networks:
+  supabase_default:
+    external: true
